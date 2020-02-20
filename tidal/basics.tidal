@@ -1,0 +1,150 @@
+-- Haskell core syntax for comments in single line is two minus signs. This can be useful in livecoding as you can comment out functionality on the flow.
+
+{-
+For block comments this is the method.
+-}
+
+{-
+The main functions of Tidal Cycles by default are d1, d2 ... d16. In lots of ways they are similar to channels on an audio mixer, but from a programming perspective they are
+only functions just as anything else. They are forwaring OSC messages to the SuperCollider sound server, where SuperDirt catches the messages and plays the synths and samples
+that are packed inside the message.
+
+Basic operator: $. The dollar symbol is used to chain main functions and those mostly affecting pattern generation. There will be others we will meet later (joining with #, addition
+with |+ etc.).
+
+The first function: sound (s abbrv) - plays the samples in a patternized way that it receives from its input.
+-}
+
+d1 $ s "808"
+
+{-
+The sample names are directories inside the SuperDirt samples folder referenced. There are lots of them there, any of them can be simply referenced by its name. By default,
+it plays the first sample inside the folder. To change it, we can use the `:n` expression inside the pattern
+-}
+
+d1 $ s "808:1"
+
+d1 $ s "808:2"
+
+{-
+Patterns can be combined, and for that we need to understand what one cycle is. Cycle is basically everything that happens inside our code between two tacts.
+The time between two tacts can be changed by setting the cps main parameter (cycles per second) using the setcps global setter, outside of any main function
+-}
+
+setcps 0.3 -- 0.3 cycle per second
+setcps 0.8 -- 0.8 cycle per second
+setcps (1/2) -- 0.5 cycle per second, using Haskell's builtin calculations
+setcps 1 -- one cycle per second
+
+{-
+TASK: compare it with beats per minute (bpm) and calculate 120 bpm for setcps
+-}
+
+{-
+INSIDE THE PATTERN
+Multiple sample references can be added to a pattern. Basically giving more input will still be played inside one cycle.
+-}
+
+d1 $ s "808:3 808:4"
+
+d1 $ s "808:1 808:3 808 808:2" -- note that if you do not give the number of sample inside the directory it will default to zero.
+
+{-
+MULTIPLICATION INSIDE A PATTERN
+You can multiplicate the amount one sample is played inside a cycle.
+-}
+
+d1 $ s "808*4" -- plays the 0th sample four times inside a cycle.
+d1 $ s "808*4 808" 
+
+{- 
+notice that the cycle is now divided into two parts. For the first part the sample is played 4 times, and four the second only once, but the rhytmic timing is not like regularly
+splitting the pattern for five parts. To demonstrate this we can use two main functions, d1 and d2.
+-}
+
+d1 $ s "808*5"
+d2 $ s "808*4 808"
+
+{-
+To silence a main function, type its name and the `silence` keyword. To silence them all, simply run the command `hush`.
+-}
+
+d2 silence
+
+hush
+
+{-
+GROUPING
+You can group inside your pattern using the [] symbols. This creates a unit inside your groove that will be divided as one unit of n.
+-}
+
+d1 $ s "[808:1 808:2]"
+d1 $ s "[808:1 808:2] 808:3" -- the same difference can be noted like above with the simple multiplication!
+d1 $ s "[808:1 808:2]*2 808:3" -- and the multiplication effect will also have same results on these groups.
+
+hush
+
+{-
+Silences and breaks can be achieved with the tilde
+-}
+
+d1 $ s "[~ 808oh]" --  we are using now more samples for the 808 pack
+d2 $ s "808bd" -- this way you can here that the silence is there and where the sample is triggered actually inside the cycle
+
+-- Silences can be multiplied within the pattern as well
+
+d1 $ s "[~ 808oh]*4"
+-- Lets do the same with the bass drum!
+d2 $ s "808bd*4"
+-- now we have a beat!
+
+{-
+Inside squared brackets, you can also use commas, the result will be that both samples will be fired at the same time
+-}
+
+d2 $ s "808bd [808bd, 808sd:3] 808bd [808bd, 808sd:3]"
+-- or in a more compact form:
+d2 $ s "[808bd [808bd, 808sd:3]]*2" -- note that these can be endlessly combined.
+
+{-
+Now what if we want that in d2's pattern, every second snare should be a high conga instead?
+Well, we can use the original long pattern and modify it there.
+-}
+d2 $ s "808bd [808bd, 808sd:3] 808bd [808bd, 808hc]"
+
+{- 
+Is there any way we can make it more compact, so we could create really complex patterns? Yes, there is. First of all, using <> as brackets, we can change anything inside
+any pattern. The things we write inside the comparator signs will step one with each cycle for the next parameter
+-}
+
+d2 $ s "[808bd [808bd, <808sd:3 808hc>]]*2" -- this is good, and there is an alternative to make it even shorter
+
+{-
+FAST AND SLOW
+There are times when you want to play a cycle n times faster then the others - sometimes you want it to be slow than the others. Very important controller functions are coming:
+fast and slow. Both take a float value as input to tell how much the pattern should be sped up or slowed down.
+Notice that they are both - as pattern modifiers - are chained in with the dollar sign!
+-}
+
+d2 $ fast 2 $ s "[808bd [808bd, <808sd 808hc>]]"
+d2 $ slow 2 $ s "[808bd [808bd, <808sd 808hc>]]"
+d2 $ fast 4 $ s "[808bd [808bd, <808sd 808hc>]]"
+
+{-
+BROKEN BEATS AND EUCLIDIAN Patterns
+There are numerous ways to create broken beats, the simplest method is using tildes inside your pattern.
+Let's make a tom sound with a basic broken beat of 3 in 8ths, quantized:
+-}
+
+d3 $ s "808lt ~ ~ 808lt ~ ~ 808lt ~" - pretty straightforward, but ugly and wrong, isn't it?
+
+{-
+Using regular (brackets) you can make the 3 over 8 broken beat quantized way shorter!
+-}
+
+d3 $ s "808lt(3,8)" -- this is still the same!
+d3 $ s "808lt(5,8)" -- this is five over eight!
+d3 $ s "808lt(<3 5>,8)" -- this changes by each cycle!
+d3 $ fast 2 $ s "808lt(<3 5>,8)" -- there are many ways to play around with this
+
+hush
