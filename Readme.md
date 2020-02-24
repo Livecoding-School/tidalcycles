@@ -2,9 +2,15 @@
 ## March 3-8. 2020, Budapest
 
 This is the public repository for the workshop material of the event regarding Tidal Cycles.
+During this workshop you will learn:
+* How to set up your computer to run Tidal Cycles
+* How to make noise, create sound and even music using this Haskell-based mini-language
+* How to use Tidal Cycles to generate patterns
+* How to record your work
+* How to use external samples and synths integrated in SuperDirt and SC3Plugins.
+* Some basics of OSC messages and networked signal sending
 
 ## Installing Tidal Cycles
-## ...with avoiding dead ends
 
 Installation of Tidal Cycles can be a pain in the ass even for those who are into coding a bit. Haskell is a really uncommon language and SuperCollider can cause issues as well.
 This guide is to help you avoiding problems during installation.
@@ -41,3 +47,10 @@ everything shall be A-OK with it.
 ## Install Atom or Visual Studio Code
 * You can just simply follow the instructions from the TidalCycles website mentioned above for Atom.
 * If you would rather use **Visual Studio Code** (which I strongly suggest, mostly if you would like to use Tidal as a tool in network), you can download it and find for the Tidal extension. After IDE restart, it will function automatically. You can find the extensions under the cog at the bottom left of the IDE.
+
+## Installing SC3Plugins
+SC3Plugins is an extension to SuperCollider. It is not necessary to have SC3Plugins to use Tidal Cycles, however there are lots of effects and synths that are not included in the basic SuperDirt package, and SC3 is required to use them.
+* Go to the [SC3Plugins download page](https://github.com/supercollider/sc3-plugins/releases) and download the zip file with the SC3 assets that suits your OS. On Mac and Windows, it will function 100% perfectly, there is no need to build them using `make`, and the Linux tarball works usually well on Debian-based OS's.
+* Find your extensions folder from SuperCollider. You have to use the `Platform.userExtensionDir` command to locate your extensions dir for your user. If you want to install the plugins system-wide, you can detect this folder using the `Platform.systemExtensionDir`. After running the command, the SuperCollider terminal will reply you with the full path of the folder you need. If it says the folder does not exist, just run `File.mkdir(Platform.userExtensionDir)` or `File.mkdir(Platform.systemExtensionDir)`.
+* Navigate your file explorer to this directory, and extract the downloaded SC3Plugins into this folder (the plugins should be in the SC3Plugins folder and not in the directory root).
+* Restarting SuperCollider after this is strongy suggested.
