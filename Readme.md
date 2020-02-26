@@ -54,3 +54,22 @@ SC3Plugins is an extension to SuperCollider. It is not necessary to have SC3Plug
 * Find your extensions folder from SuperCollider. You have to use the `Platform.userExtensionDir` command to locate your extensions dir for your user. If you want to install the plugins system-wide, you can detect this folder using the `Platform.systemExtensionDir`. After running the command, the SuperCollider terminal will reply you with the full path of the folder you need. If it says the folder does not exist, just run `File.mkdir(Platform.userExtensionDir)` or `File.mkdir(Platform.systemExtensionDir)`.
 * Navigate your file explorer to this directory, and extract the downloaded SC3Plugins into this folder (the plugins should be in the SC3Plugins folder and not in the directory root).
 * Restarting SuperCollider after this is strongy suggested.
+
+## Test your enviroment
+* Start your preferred IDE configured as described above / mentioned above
+* Create a new file named `test.tidal`
+* In the first line of this file, type `setcps 0.4` and press a shift+enter at the end of the line
+* You should see the GHCi engine boot up, and a terminal opens up at the bottom of your IDE, prompting something like
+```haskell
+GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+Prelude> Prelude> Listening for controls on 127.0.0.1:6010
+tidal> tidal> 
+```
+* Start SuperCollider with administrator rights
+* Once the help indexing is complete, run the `SuperDirt.start` command. If the SuperDirt boots up successfully, you should see the SuperCollider terminal prompting that `SuperDirt: listening to Tidal on port 57120` after some time it loads the SuperDirt samples.
+* If everything seems ok with SuperCollider, go back to your IDE and open up your `test.tidal` file. Go to line 3, and type `d1 $ s "808bd"` and run it with shift+enter.
+* This shall play a short bass drum sample slowly. If you here it, you are completely set up!
+
+### Notes for installation
+* Google every error message, coming from haskell or SuperCollider. Most of the cases the problem can be resolved by reading the guidelines in your searches.
+* Using a boot script for SuperCollider is unadvised at the moment, if you feel experienced enough in SuperCollider and can make it sure that the memory allocation happens after the SuperDirt samples are loaded, just go ahead but note that it can cause malfunction and bad sound quality if you do not understand what is happening in the background.
