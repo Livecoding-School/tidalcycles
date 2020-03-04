@@ -1,4 +1,5 @@
 setcps 0.4
+hush
 
 -- Haskell core syntax for comments in single line is two minus signs. This can be useful in livecoding as you can comment out functionality on the flow.
 

@@ -1,0 +1,15 @@
+d1 $ stack [
+    s "bd:2*4" # speed 1.2 # gain 1.2
+    ,
+    someCycles (rev) $
+    stutWith 4 (3/16) ((|* gain 0.9)) $
+    every 2 (within (0.25, 0.75) (jux((fast 2) . (# speed (-1))))) $
+    note "{c5 d5 [~ b5] d5 g5*2 a5(3,4)}%4" # s "<arpy arpy:2>>" # legato 1 # 
+    lpf (choose [1400, 2800, 6600, 3200]) # lpq (range 0 0.3 rand) # gain 0.9
+    ,
+    note "[~ <c3 c3 c3 c3 g2 g2 a2 a2>]*4" # s "arpy" # lpf 600 # gain 1.1
+    ,
+    sometimes (# s "808sd:4") $
+    stutWith 8 (3/16) ((|* gain 0.9) . (|* speed 0.5)) $
+    s "808oh*16?" # legato (range 0.2 0.5 $ slow 8 sine) # gain 0.9
+]

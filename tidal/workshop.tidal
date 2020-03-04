@@ -1,0 +1,109 @@
+{-
+Alex McLean
+https://toplap.org/
+https://we.lurk.org/hyperkitty/list/tidal@we.lurk.org/
+Mike Hodenick
+http://kindohm.com/
+-}
+
+--type your comment
+
+setcps 0.4
+
+d1 $ sound "808oh:2*16?"
+
+d2 $ sound "808bd*4"
+
+d3 $ sound "[~ 808oh]*4"
+
+d4 $ sound "[~ sd]*2"
+
+d5 $ sound "cr"
+
+d1 $ 
+stack [
+    s "808bd*4"
+    ,
+    --(# gain 0) $
+    s "[~ 808sd]*2"
+    ,
+    s "[~ 808oh]*4"
+]
+
+d1 $ 
+(# gain 0.7) $ 
+jux((rev) . (fast 2) . (# speed (choose [(-1), 1, 2, 4]))) $
+n "[c5 d5 g4 <a5 b4 d6>]*2" # s "arpy" # gain 1 # pan 0.5 # 
+lpf (range 400 4000 $ slow 4 sine) # lpq (range 0 0.3 rand)
+
+d3 $ slow 4 $ s "alphabet*32" # n (run 32) # gain 0.8 # speed 1.3
+
+d1 silence
+
+hush
+
+d2 $
+stack [
+    s "808bd(6,16)" # n 2 # gain 1.1
+    ,
+    s "808mc(<3 5>,8) 808hc*<4 2>"
+    ,
+    s "[~ 808sd:1]*2"
+    ,
+    s "808oh*8" # gain "[1 0.8]*<4 2>"
+    ,
+    (# lpf (range 300 12000 $ slow 8 sine)) $
+    cat [
+        "808hc*16?" # n (irand 10)
+        ,
+        "808mc*16"
+    ]
+    ,
+    stutWith 8 (3/16) ((|* gain 0.9) . (|* speed 1.2)) $
+    s "[~ <cp numbers>]" # n (irand 10) # speed 1.4
+    ,
+    (+24) $
+    note "[~ <c3'maj c3'maj*2 d3'min7*2 g3'maj>]*4" # s "arpy" # gain 0.7
+    ,
+    note "[<c3 c3 d3 g3>(3,8)]" # s "arpy"
+    ,
+    n (arp "<pinkyup pinkydown>" "c4'maj g4'maj7") # s "superchip" # gain 0.8 
+]
+
+let g = (# gain 0)
+--let m p = (# gain p)
+
+d1 $
+--fast 2 $
+stack[
+    loopAt (1/2) $ 
+    every 6 (# lpf (choose [300, 3000, 9000, 12000])) $
+    every 4 (# speed (range 1 1.3 rand)) $
+    ((choose [(1/8), (1/4), (3/4), (3/8)]) <~) $
+    striate 8 $ s "breaks125"
+    ,
+    s "gabba*8" # gain 0 # speed (-1)
+]
+
+d1 $
+stack [
+    s "bd*4"
+    ,
+    every 2 (jux((1/8) ~>)) $
+    s "[~ ho]*4" # gain 0.9
+]
+
+
+d2 $ 
+stutWith 8 (3/16) ((|* gain 0.9) . (|/ speed 1.2)) $
+s "bd arpy"
+
+hush
+
+unsolo 1
+
+d5 silence
+
+Make a snare sound on every second kick
+
+hush
